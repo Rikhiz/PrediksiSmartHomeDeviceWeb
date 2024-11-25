@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Status Gizi</title>
+</head>
+<body>
+    <h1>Prediksi Status Gizi Balita</h1>
+    
+    <form action="/predict" method="POST">
+        <label for="umur_bulan">Umur (bulan):</label><br>
+        <input type="text" id="umur_bulan" name="umur_bulan"><br><br>
+        
+        <label for="tinggi_badan">Tinggi Badan (cm):</label><br>
+        <input type="text" id="tinggi_badan" name="tinggi_badan"><br><br>
+        
+        <label for="jenis_kelamin">Jenis Kelamin (0 untuk Laki-laki, 1 untuk Perempuan):</label><br>
+        <input type="text" id="jenis_kelamin" name="jenis_kelamin"><br><br>
+        
+        <input type="submit" value="Prediksi">
+    </form>
+    
+    {% if prediction %}
+        <h2>Hasil Prediksi: {{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>
