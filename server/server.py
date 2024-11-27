@@ -1,31 +1,38 @@
 from flask import Flask, request, render_template
-import pickle
+import joblib
 import numpy as np
 
 app = Flask(__name__)
 
-# Memuat model yang sudah disimpan
-model_filename = 'decision_tree_model.pkl'
-with open(model_filename, 'rb') as file:
-    model = pickle.load(file)
+# Memuat model dari file
+model_path = 'models/decision_tree_model.joblib'
+dtr_model = joblib.load(model_path)
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    if request.method == 'POST':
-        umur_bulan = float(request.form['umur_bulan'])
-        tinggi_badan = float(request.form['tinggi_badan'])
+    try:
+        # Ambil data input dari form HTML
+        umur = int(request.form['umur'])
         jenis_kelamin = int(request.form['jenis_kelamin'])
+        tinggi_badan = float(request.form['tinggi_badan'])
 
-        input_data = np.array([[umur_bulan, tinggi_badan, jenis_kelamin]])
+        # Masukkan data ke dalam array untuk prediksi
+        input_data = np.array([[umur, jenis_kelamin, tinggi_badan]])
 
-        prediction = model.predict(input_data)
-        status_gizi = ['Normal', 'Severely Stunted', 'Stunted', 'Tinggi'][prediction[0]]
-        
-        return render_template('index.html', prediction=status_gizi)
+        # Lakukan prediksi
+        prediction = dtr_model.predict(input_data)[0]
+
+        # Mapping hasil prediksi ke label
+        status_gizi_mapping = {0: 'Normal', 1: 'Severely Stunted', 2: 'Stunted', 3: 'Tinggi'}
+        result = status_gizi_mapping[prediction]
+
+        return render_template('index.html', prediction_text=f'Status Gizi: {result}')
+    except Exception as e:
+        return render_template('index.html', prediction_text=f"Error: {str(e)}")
 
 if __name__ == '__main__':
     app.run(debug=True)
