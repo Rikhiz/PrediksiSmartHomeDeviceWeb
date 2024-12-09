@@ -3,10 +3,12 @@ import joblib
 import numpy as np
 
 app = Flask(__name__)
-
+# Load the scaler and model
+scaler_path = 'models/scaler.joblib'
+sc = joblib.load(scaler_path)
 # Memuat model dari file
-model_path = 'models/decision_tree_model.joblib'
-dtr_model = joblib.load(model_path)
+model_path = 'models/random_forest_model.joblib'
+rf = joblib.load(model_path)
 
 @app.route('/')
 def home():
@@ -16,23 +18,30 @@ def home():
 def predict():
     try:
         # Ambil data input dari form HTML
-        umur = int(request.form['umur'])
-        jenis_kelamin = int(request.form['jenis_kelamin'])
-        tinggi_badan = float(request.form['tinggi_badan'])
+        DeviceType = int(request.form['DeviceType'])
+        UsageHoursPerDay = float(request.form['UsageHoursPerDay'])
+        EnergyConsumption = float(request.form['EnergyConsumption'])
+        UserPreferences = int(request.form['UserPreferences'])
+        MalfunctionIncidents = int(request.form['MalfunctionIncidents'])
+        DeviceAgeMonths = int(request.form['DeviceAgeMonths'])
 
         # Masukkan data ke dalam array untuk prediksi
-        input_data = np.array([[umur, jenis_kelamin, tinggi_badan]])
+        input_data = np.array([[DeviceType, UsageHoursPerDay, EnergyConsumption, UserPreferences, MalfunctionIncidents, DeviceAgeMonths]])
+
+        # Standardisasi data menggunakan scaler yang sudah dilatih
+        input_data_scaled = sc.transform(input_data)
 
         # Lakukan prediksi
-        prediction = dtr_model.predict(input_data)[0]
+        prediction = rf.predict(input_data_scaled)[0]
 
         # Mapping hasil prediksi ke label
-        status_gizi_mapping = {0: 'Normal', 1: 'Severely Stunted', 2: 'Stunted', 3: 'Tinggi'}
-        result = status_gizi_mapping[prediction]
+        efficiency_mapping = {0: 'Inefficient', 1: 'Efficient'}
+        result = efficiency_mapping[prediction]
 
-        return render_template('index.html', prediction_text=f'Status Gizi: {result}')
+        return render_template('index.html', prediction_text=f'Smart Home Efficiency: {result}')
     except Exception as e:
         return render_template('index.html', prediction_text=f"Error: {str(e)}")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

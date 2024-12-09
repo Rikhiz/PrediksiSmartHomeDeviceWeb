@@ -42,21 +42,27 @@
 </head>
 <body>
     <div class="container">
-        <h2>Prediksi Status Gizi</h2>
-        <form action="/predict" method="POST">
-            <label for="umur">Umur (bulan):</label>
-            <input type="number" id="umur" name="umur" required>
-
-            <label for="jenis_kelamin">Jenis Kelamin:</label>
-            <select id="jenis_kelamin" name="jenis_kelamin" required>
-                <option value="0">Laki-laki</option>
-                <option value="1">Perempuan</option>
-            </select>
-
-            <label for="tinggi_badan">Tinggi Badan (cm):</label>
-            <input type="number" id="tinggi_badan" name="tinggi_badan" step="0.1" required>
-
-            <button type="submit">Prediksi</button>
+        <h2>Prediksi Device Smart Home Efficiency</h2>
+        <form action="/predict" method="post">
+            <label for="DeviceType">Device Type:</label>
+            <input type="number" name="DeviceType" id="DeviceType" required><br>
+        
+            <label for="UsageHoursPerDay">Usage Hours Per Day:</label>
+            <input type="number" step="0.1" name="UsageHoursPerDay" id="UsageHoursPerDay" required><br>
+        
+            <label for="EnergyConsumption">Energy Consumption:</label>
+            <input type="number" step="0.1" name="EnergyConsumption" id="EnergyConsumption" required><br>
+        
+            <label for="UserPreferences">User Preferences:</label>
+            <input type="number" name="UserPreferences" id="UserPreferences" required><br>
+        
+            <label for="MalfunctionIncidents">Malfunction Incidents:</label>
+            <input type="number" name="MalfunctionIncidents" id="MalfunctionIncidents" required><br>
+        
+            <label for="DeviceAgeMonths">Device Age (Months):</label>
+            <input type="number" name="DeviceAgeMonths" id="DeviceAgeMonths" required><br>
+        
+            <button type="submit">Predict</button>
         </form>
         {% if prediction_text %}
         <div class="result">{{ prediction_text }}</div>
