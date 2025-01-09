@@ -5,4 +5,5 @@ module.exports = {
     extend: {}, // Customize your theme here if needed
   },
   plugins: [], // Add plugins if needed
+  
 };
