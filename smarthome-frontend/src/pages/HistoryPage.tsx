@@ -73,11 +73,11 @@ const HistoryPage: React.FC = () => {
         
         <h2 className="text-xl font-semibold text-center mb-6">PERBANDINGAN HASIL DATA</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
-          <div className="bg-white p-6 rounded-lg shadow text-center">
+          <div className="bg-red-300 p-6 rounded-lg shadow text-center">
             <h3 className="text-lg font-medium">DATA INEFICIENT</h3>
             <p className="text-4xl font-bold">{stats.inefficient}%</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow text-center">
+          <div className="bg-green-300 p-6 rounded-lg shadow text-center">
             <h3 className="text-lg font-medium">DATA EFFICIENT</h3>
             <p className="text-4xl font-bold">{stats.efficient}%</p>
           </div>
